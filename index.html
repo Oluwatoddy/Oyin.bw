@@ -130,6 +130,15 @@
     function scrollToTop() {
      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const menuIcon = document.getElementById('menu-icon');
+      const closeIcon = document.getElementById('close-icon');
+      menu.classList.toggle('hidden');
+      menuIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    }
   </script>
  </head>
  <body class="bg-gray-100 font-roboto">
@@ -273,25 +282,19 @@
             <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Perfumes')">Choose this item</button>
         </div>
         <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
-            <img alt="Surprise party" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/h9aXXx24q-fM2gPIy0eA-LbcjBdMt1bAUFwQ_faRzmU.jpg" width="300"/>
-            <h3 class="text-lg font-bold mb-2">Surprise party</h3>
-            <p class="mb-4">A surprise party to celebrate the special day.</p>
-            <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Surprise party')">Choose this item</button>
-        </div>
-        <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
-          <img alt="Shirts" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/edgn80qbSWZzEq_I3NukAh_TilWBORWASUAccOjFBEA.jpg" width="300"/>
+          <img alt="Shirts" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://th.bing.com/th/id/OIP.J0VmZyQmRkoPje0p_B_-_QAAAA?rs=1&pid=ImgDetMain" width="300"/>
           <h3 class="text-lg font-bold mb-2">Shirts</h3>
           <p class="mb-4">Set of Shirts.</p>
           <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Shirts')">Choose this item</button>
       </div>
       <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
-          <img alt="Headsets" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://mockuptree.com/wp-content/uploads/2019/11/headphones-mockup-pack.jpg" width="300"/>
+          <img alt="Headsets" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://www.bhphotovideo.com/images/images2500x2500/beats_by_dr_dre_900_00183_01_studio_wireless_over_ear_headphone_1037578.jpg" width="300"/>
           <h3 class="text-lg font-bold mb-2">Headset</h3>
           <p class="mb-4">Pretty Headsets</p>
           <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Headset')">Choose this item</button>
       </div>
       <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
-          <img alt="Surprise surprise with iPhone 13" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://www.bhphotovideo.com/images/images2500x2500/beats_by_dr_dre_900_00183_01_studio_wireless_over_ear_headphone_1037578.jpg" width="300"/>
+          <img alt="Surprise surprise with iPhone 13" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://therighthairstyles.com/wp-content/uploads/2019/04/hair-accessory-trends-featured-image.jpg" width="300"/>
           <h3 class="text-lg font-bold mb-2">Hair Accesories</h3>
           <p class="mb-4">Accesories for Oyin's Hair.</p>
           <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Hair accessories')">Choose this item</button>
