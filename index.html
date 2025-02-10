@@ -1,0 +1,340 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Oyin' Wishlist
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   @keyframes fadeIn {
+    0% {
+     opacity: 0;
+     transform: translateY(20px);
+    }
+    100% {
+     opacity: 1;
+     transform: translateY(0);
+    }
+   }
+   @keyframes pulse {
+    0% {
+     transform: scale(1);
+    }
+    50% {
+     transform: scale(1.05);
+    }
+    100% {
+     transform: scale(1);
+    }
+   }
+   @keyframes slideIn {
+    0% {
+     opacity: 0;
+     transform: translateX(-100%);
+    }
+    100% {
+     opacity: 1;
+     transform: translateX(0);
+    }
+   }
+   .animate-fadeIn {
+    animation: fadeIn 1s ease-in-out;
+   }
+   .animate-pulse {
+    animation: pulse 2s infinite;
+   }
+   .animate-slideIn {
+    animation: slideIn 1s ease-in-out;
+   }
+   .hidden {
+    display: none;
+   }
+  </style>
+  <script>
+   function chooseItem(itemName) {
+     const userName = prompt("Please enter your name:");
+     if (userName) {
+      alert(itemName + " has been chosen successfully by " + userName + "!");
+      recordChoice(userName, itemName);
+      downloadCalendarReminder();
+     }
+    }
+ 
+    function downloadCalendarReminder() {
+     const calendarEvent = `
+ BEGIN:VCALENDAR
+ VERSION:2.0
+ BEGIN:VEVENT
+ SUMMARY:Reminder to Buy Birthday Gift
+ DTSTART;VALUE=DATE:20230301
+ DTEND;VALUE=DATE:20230302
+ DESCRIPTION:Don't forget to buy the birthday gift for [Celebrant's Name]!
+ BEGIN:VALARM
+ TRIGGER:-PT24H
+ REPEAT:1
+ DURATION:PT15M
+ ACTION:DISPLAY
+ DESCRIPTION:Reminder to Buy Birthday Gift
+ END:VALARM
+ END:VEVENT
+ END:VCALENDAR
+     `;
+     const blob = new Blob([calendarEvent], { type: 'text/calendar' });
+     const link = document.createElement('a');
+     link.href = URL.createObjectURL(blob);
+     link.download = 'birthday_reminder.ics';
+     document.body.appendChild(link);
+     link.click();
+     document.body.removeChild(link);
+     showPopup();
+    }
+
+    function showPopup() {
+     const popup = document.getElementById('popup');
+     popup.classList.remove('hidden');
+     setTimeout(() => {
+      popup.classList.add('hidden');
+     }, 3000);
+    }
+
+    function recordChoice(userName, itemName) {
+     const xhr = new XMLHttpRequest();
+     xhr.open("POST", "record_choice.php", true);
+     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+     xhr.send("userName=" + encodeURIComponent(userName) + "&itemName=" + encodeURIComponent(itemName));
+    }
+
+    function authenticateAdmin() {
+     const username = prompt("Enter Admin Username:");
+     const password = prompt("Enter Admin Password:");
+     if (username === "Oyindamola" && password === "damola01") {
+      window.location.href = "admin.html";
+     } else {
+      alert("Incorrect username or password!");
+     }
+    }
+
+    window.onscroll = function() {
+     const arrow = document.getElementById('scrollToTop');
+     if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+      arrow.classList.remove('hidden');
+     } else {
+      arrow.classList.add('hidden');
+     }
+    };
+
+    function scrollToTop() {
+     window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+ </head>
+ <body class="bg-gray-100 font-roboto">
+  <header class="bg-black text-white p-4 animate-fadeIn">
+   <div class="container mx-auto flex justify-between items-center">
+    <h1 class="text-2xl font-bold">
+     Oyin's Wishlist
+    </h1>
+    <nav>
+     <ul class="flex space-x-4 ml-4">
+      <li>
+       <a class="hover:underline" href="#home">
+        Home
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="#wishlist">
+        Wishlist
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="#abtoyin">
+        About
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="javascript:authenticateAdmin();">
+        Admin
+       </a>
+      </li>
+     </ul>
+    </nav>
+   </div>
+  </header>
+  <section class="relative h-screen bg-cover bg-center animate-fadeIn" id="home">
+   <img alt="Image of the celebrant" class="absolute inset-0 w-full h-full object-cover" height="1080" src="./img/oym2.jpg" width="1920"/>
+   <div class="absolute inset-0 bg-black opacity-50">
+   </div>
+   <div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-white">
+    <h2 class="text-4xl md:text-6xl font-bold mb-4 animate-fadeIn">
+     Happy Birthday, Oyindamola!
+    </h2>
+    <p class="text-lg md:text-2xl mb-8 animate-fadeIn">
+     Choose a gift from the wishlist to make their day special.
+    </p>
+    <a class="bg-black text-white px-6 py-3 rounded-full text-lg font-bold animate-pulse" href="#wishlist">
+     View Wishlist
+    </a>
+   </div>
+  </section>
+  <section class="container mx-auto p-4 animate-fadeIn" id="abtoyin">
+   <h2 class="text-2xl font-bold mb-4 text-center">
+    About Oyindamola
+   </h2>
+   <div class="bg-white p-6 rounded shadow-lg">
+    <div class="flex flex-col md:flex-row items-center">
+     <img alt="A detailed description of the celebrant" class="w-32 h-32 md:w-48 md:h-48 object-cover rounded-full mb-4 md:mb-0 md:mr-6" height="200" src="./img/oym.jpg" width="200"/>
+     <div>
+      <p class="text-lg mb-4">
+       <strong>
+        Oyindamola
+       </strong>
+       is a wonderful person who brings joy and happiness to everyone around them. They are known for their kindness, generosity, and infectious smile. This year, let's make their birthday extra special by choosing a gift from their wishlist.
+      </p>
+      <p class="text-lg">
+       Thank you for being a part of this celebration and for making Oyindamola's birthday unforgettable!
+      </p>
+     </div>
+    </div>
+   </div>
+  </section>
+  <section class="mb-8" id="wishlist">
+   <h2 class="text-xl font-bold mb-4 animate-fadeIn">
+    Wishlist
+   </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+            <img alt="Class bag and church bag" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/ZziJp2SIZdd3RYkeHrA2J69ti9UuxtKVWLy_ZOwvi9M.jpg" width="300"/>
+            <h3 class="text-lg font-bold mb-2">Class bag and church bag</h3>
+            <p class="mb-4">A stylish and functional bag for both class and church.</p>
+            <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Class bag and church bag')">Choose this item</button>
+        </div>
+        <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+            <img alt="Money" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/Z40jRuXoa4S7diEquTrdspwgNBy5kFIG7CG4Aj4rhZ4.jpg" width="300"/>
+            <h3 class="text-lg font-bold mb-2">Money</h3>
+            <p class="mb-4">A monetary gift to spend as desired.</p>
+            <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Money')">Choose this item</button>
+        </div>
+        <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+            <img alt="Money bouquet" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/aaDeXiSWaoUZdOYUvHcPkLV030MZw1eS_6O9XDVrko0.jpg" width="300"/>
+            <h3 class="text-lg font-bold mb-2">Money bouquet</h3>
+            <p class="mb-4">A bouquet made of money for a unique gift.</p>
+            <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Money bouquet')">Choose this item</button>
+        </div>
+        <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+            <img alt="Sneakers" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/5VHrgpGhWhnbCm_HaU1r4Zx5-VywutjXgKPfuYCxpG0.jpg" width="300"/>
+            <h3 class="text-lg font-bold mb-2">Sneakers</h3>
+            <p class="mb-4">A pair of stylish and comfortable sneakers.</p>
+            <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Sneakers')">Choose this item</button>
+        </div>
+        <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+            <img alt="Heels" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/iuWzlQOil6PiESOcVlNT6GEGt7jKgsvrx3PiAOq9dco.jpg" width="300"/>
+            <h3 class="text-lg font-bold mb-2">Heels</h3>
+            <p class="mb-4">A pair of elegant heels for special occasions.</p>
+            <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Heels')">Choose this item</button>
+        </div>
+        <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+            <img alt="Baby shoe" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/edgn80qbSWZzEq_I3NukAh_TilWBORWASUAccOjFBEA.jpg" width="300"/>
+            <h3 class="text-lg font-bold mb-2">Baby shoe</h3>
+            <p class="mb-4">A cute pair of baby shoes.</p>
+            <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Baby shoe')">Choose this item</button>
+        </div>
+        <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+            <img alt="Rings" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/lgcd1Vq4BD6rzJHC5zCGoj0BWBsk5S9Ykk7nM8B9tOM.jpg" width="300"/>
+            <h3 class="text-lg font-bold mb-2">Rings</h3>
+            <p class="mb-4">A set of beautiful rings.</p>
+            <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Rings')">Choose this item</button>
+        </div>
+        <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+            <img alt="Surprise surprise with iPhone 13" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/4YtLdwGFLtFEKGNbqEw7RsHOUwjTk1LWVHe8xMTlhhY.jpg" width="300"/>
+            <h3 class="text-lg font-bold mb-2">Surprise surprise with iPhone 13</h3>
+            <p class="mb-4">A surprise gift of an iPhone 13.</p>
+            <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Surprise surprise with iPhone 13')">Choose this item</button>
+        </div>
+        <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+            <img alt="Loafers" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/1IV0ssfH0nEnY-uKF3OIYY5bgj4bD8lD9XwIoRPNRhQ.jpg" width="300"/>
+            <h3 class="text-lg font-bold mb-2">Loafers</h3>
+            <p class="mb-4">A pair of stylish loafers.</p>
+            <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Loafers')">Choose this item</button>
+        </div>
+        <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+            <img alt="Combat jeans" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/20H_hjqOenrST3kdQ4tkG-YqTUj_56Z9UwSrlLTT4EI.jpg" width="300"/>
+            <h3 class="text-lg font-bold mb-2">Combat jeans</h3>
+            <p class="mb-4">A pair of rugged combat jeans.</p>
+            <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Combat jeans')">Choose this item</button>
+        </div>
+        <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+            <img alt="Perfumes" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/bP44rIJ6qaY1XrEdLu83K6HllD-AnBdXhRHwc3Hqp9c.jpg" width="300"/>
+            <h3 class="text-lg font-bold mb-2">Perfumes</h3>
+            <p class="mb-4">A collection of delightful perfumes.</p>
+            <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Perfumes')">Choose this item</button>
+        </div>
+        <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+            <img alt="Surprise party" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/h9aXXx24q-fM2gPIy0eA-LbcjBdMt1bAUFwQ_faRzmU.jpg" width="300"/>
+            <h3 class="text-lg font-bold mb-2">Surprise party</h3>
+            <p class="mb-4">A surprise party to celebrate the special day.</p>
+            <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Surprise party')">Choose this item</button>
+        </div>
+        <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+          <img alt="Shirts" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://storage.googleapis.com/a1aa/image/edgn80qbSWZzEq_I3NukAh_TilWBORWASUAccOjFBEA.jpg" width="300"/>
+          <h3 class="text-lg font-bold mb-2">Shirts</h3>
+          <p class="mb-4">Set of Shirts.</p>
+          <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Shirts')">Choose this item</button>
+      </div>
+      <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+          <img alt="Headsets" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://mockuptree.com/wp-content/uploads/2019/11/headphones-mockup-pack.jpg" width="300"/>
+          <h3 class="text-lg font-bold mb-2">Headset</h3>
+          <p class="mb-4">Pretty Headsets</p>
+          <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Headset')">Choose this item</button>
+      </div>
+      <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+          <img alt="Surprise surprise with iPhone 13" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://www.bhphotovideo.com/images/images2500x2500/beats_by_dr_dre_900_00183_01_studio_wireless_over_ear_headphone_1037578.jpg" width="300"/>
+          <h3 class="text-lg font-bold mb-2">Hair Accesories</h3>
+          <p class="mb-4">Accesories for Oyin's Hair.</p>
+          <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Hair accessories')">Choose this item</button>
+      </div>
+      <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+          <img alt="Loafers" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://img.etimg.com/thumb/width-1200,height-900,imgsize-12478,resizemode-75,msid-98156428/top-trending-products/gifts/12-unique-and-best-selling-birthday-gifts-under-rs-999.jpg" width="300"/>
+          <h3 class="text-lg font-bold mb-2">Snacks Package</h3>
+          <p class="mb-4">Package box of snacks.</p>
+          <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Snacks Package')">Choose this item</button>
+      </div>
+      <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+          <img alt="Combat jeans" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://insightclothing.co.uk/wp-content/uploads/2017/07/Carabou-Open-Hem-Joggers-4-in-1.jpg" width="300"/>
+          <h3 class="text-lg font-bold mb-2">Joggers</h3>
+          <p class="mb-4">A pair of Joggers.</p>
+          <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Joggers')">Choose this item</button>
+      </div>
+      <div class="bg-white p-4 rounded shadow hover:shadow-lg transition-shadow duration-300 animate-slideIn">
+          <img alt="surprisee" class="w-full h-48 object-cover rounded mb-4" height="200" src="https://www.organizedmom.net/wp-content/uploads/2022/12/how-to-plan-a-surprise-birthday-party-000.jpg" width="300"/>
+          <h3 class="text-lg font-bold mb-2">Surprise on my special day</h3>
+          <p class="mb-4">Birthdays Should be eventful!</p>
+          <button class="bg-black text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300" onclick="chooseItem('Surprise on my special day')">Choose this item</button>
+      </div>
+          </section>
+  <div id="popup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+   <div class="bg-white p-6 rounded shadow-lg text-center">
+    <h3 class="text-2xl font-bold mb-4">
+     Done!
+    </h3>
+    <p class="text-lg">
+     Thank you for being a part of this celebration!
+    </p>
+   </div>
+  </div>
+  <footer class="bg-black text-white p-4 mt-8 animate-fadeIn">
+   <div class="container mx-auto text-center">
+    <p>
+     © 2025 Birthday Wishlist. All rights reserved.
+    </p>
+   </div>
+  </footer>
+  <button id="scrollToTop" class="fixed bottom-4 right-4 bg-black text-white p-3 rounded-full hidden" onclick="scrollToTop()">
+   <i class="fas fa-arrow-up">
+   </i>
+  </button>
+ </body>
+</html>
